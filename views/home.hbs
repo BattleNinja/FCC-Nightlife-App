@@ -1,0 +1,136 @@
+<div id='body'></div>
+{{# if user}}
+    <input type="hidden" id="id" value={{user.id}}/>
+{{/ if}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.0/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.0/react-dom.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<!--React component-->
+<script type="text/babel">
+    class App extends React.Component {
+        constructor() {
+            super();
+            this.handleSubmit = this.handleSubmit.bind(this);
+            this.list = this.list.bind(this);
+            this.like = this.like.bind(this);
+            this.state = {
+                datas: [],
+                likelist: []
+            };
+        }
+
+        render() {
+            return (
+                    <div>
+                        <br/>
+                        <br/><br/><br/>
+                        <form id="search" onSubmit={this.handleSubmit}>
+                            <div className='form-group'>
+                                <input className='form-control' type="text" ref="place"
+                                       placeholder="Input where you want to play tonight" required/>
+                            </div>
+                            <button type="submit" className='btn btn-info'>Search</button>
+                        </form>
+                        <div className="row">
+                            {this.list()}
+                        </div>
+
+                    </div>
+            );
+        }
+
+        handleSubmit(e) {
+            e.preventDefault();
+            let place = this.refs.place.value;
+            let url = "api/search?place=" + place;
+            fetch(url).then((data) => {
+                return data.json();
+            }).then(json => {
+                this.setState({
+                    datas: json
+                });
+            });
+            if (document.getElementById('id')) {
+                let id = document.getElementById('id').value;
+                fetch('/' + id).then((data) => {
+                    return data.json();
+                }).then(json => {
+                    this.setState({
+                        likelist: json
+                    });
+                });
+            }
+        }
+
+        like(name) {
+            if (document.getElementById('id')) {
+                let id = document.getElementById('id').value;
+                fetch('/' + id + '?name=' + name, {method: "PUT"}).then((data) => {
+                    return data.json();
+                }).then(json => {
+                    this.setState({
+                        likelist: json
+                    });
+                });
+            }
+        }
+
+
+        list() {
+            let boxwidth = {width: '300 px', height: '400px'};
+            let likelist = this.state.likelist;
+            let datas = this.state.datas;
+            let brandlist = datas.map((item, index) => {
+                if (this.state.likelist.indexOf(item.name) > -1) {
+                    return (
+                            <div className="col-sm-6 col-md-4" key={index}>
+                                <div className="thumbnail" style={boxwidth}>
+                                    <img src={item.image_url} height='200px' width='150px'/>
+                                    <div className="caption">
+                                        <h3>{item.name}</h3>
+                                        <p>{item.rating}</p>
+                                        <p>
+
+                                            <button href="#" className="btn btn-danger"
+                                                    onClick={() => this.like(item.name)}>
+                                                <span className="glyphicon glyphicon-thumbs-up"></span> Like
+                                            </button>
+                                            <a href={item.url} className="btn btn-info" role="button"
+                                               target="blank">Website</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                    );
+                }
+                else
+                    return (
+                            <div className="col-sm-6 col-md-4" key={index}>
+                                <div className="thumbnail" style={boxwidth}>
+                                    <img src={item.image_url} height='200px' width='150px'/>
+                                    <div className="caption">
+                                        <h3>{item.name}</h3>
+                                        <p>{item.rating}</p>
+                                        <p>
+                                            <button type="button" className="btn btn-default"
+                                                    onClick={() => this.like(item.name)}>
+                                                <span className="glyphicon glyphicon-thumbs-up"></span> Like
+                                            </button>
+                                            <a href={item.url} className="btn btn-info" role="button"
+                                               target="blank">Website</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                    );
+            });
+            return brandlist;
+        }
+    }
+
+
+    ReactDOM.render(<App />, document.getElementById('body'));
+
+
+</script>

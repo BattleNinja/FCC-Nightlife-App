@@ -1,0 +1,25 @@
+{
+  "name": "nightlife_twitter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "connect-ensure-login": "^0.1.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.3",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.3",
+    "mongoose": "^4.10.6",
+    "passport": "^0.3.2",
+    "passport-twitter": "^1.0.4",
+    "path": "^0.12.7",
+    "yelp-api-v3": "^1.5.0"
+  }
+}

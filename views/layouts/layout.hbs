@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FCC NightLife Coordination App</title>
+    <link rel='stylesheet' href='/css/bootstrap.css'/>
+    <link rel='stylesheet' href='/css/mycss.css'>
+
+</head>
+
+<body>
+
+
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand">Enjoy your night life</h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            {{# if user}}
+                                <li class="active"><a href="/auth/logout">Logout</a></li>
+                                <li class="active"><a href="/auth/profile">{{user.username}}</a></li>
+                            {{else}}
+                                <li class="active"><a href="/auth/twitter">Login</a></li>
+                            {{/ if}}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            {{{body}}}
+
+            <div class="mastfoot">
+                <div class="inner">
+                    <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a
+                            href="https://github.com/BattleNinja">@BattleNinja</a>.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>
